@@ -1,15 +1,12 @@
 FROM centos:7
 
-MAINTAINER Dawei Wang<daweiwang.gatekeeper@gmail.com>
+LABEL maintainer daweiwang.gatekeeper@gmail.com
 
-ENV REFRESHED_AT 2017-05-15
 
 ARG HOST_UID=1000
 ARG HOST_GID=1000
 
 COPY nifi.repo /etc/yum.repos.d/
-#COPY sensu.repo /etc/yum.repos.d/sensu.repo
-#COPY entrypoint.sh /entrypoint.sh
 
 RUN getent group nifi >/dev/null || groupadd -g ${HOST_GID} nifi && \
     getent passwd nifi >/dev/null || useradd -g ${HOST_GID} -u ${HOST_UID} -s /bin/bash -c "Nifi User" -m -d /var/lib/nifi nifi &&\
@@ -20,6 +17,12 @@ RUN getent group nifi >/dev/null || groupadd -g ${HOST_GID} nifi && \
 WORKDIR /opt/nifi
 
 USER nifi
+
+VOLUME /var/lib/nifi
+VOLUME /opt/nifi/flow
+
+EXPOSE 8080
+
 ENTRYPOINT ["/opt/nifi/bin/nifi.sh"]
 CMD ["start"]
 
