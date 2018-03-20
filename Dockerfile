@@ -12,7 +12,6 @@ RUN getent group nifi >/dev/null || groupadd -g ${HOST_GID} nifi && \
     getent passwd nifi >/dev/null || useradd -g ${HOST_GID} -u ${HOST_UID} -s /bin/bash -c "Nifi User" -m -d /var/lib/nifi nifi &&\
     yum -y install java-1.8.0-openjdk-devel && \
     yum install -y nifi && \
-    yum install -y nifi-docs && \
     yum clean all
 
 WORKDIR /opt/nifi
